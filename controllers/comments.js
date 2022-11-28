@@ -49,13 +49,8 @@ exports.getOneComment = (req, res, next) => {
 };
 
 exports.addSubComment = (req, res, next) => {
-    const comment = new Comment({
+    const comment = Comment.find({
         _id: req.params.id,
-        message: req.body.message,
-        time: req.body.time,
-        video: req.body.video,
-        user: req.body.user,
-        subComments: req.body.subComments,
     });
     Comment.updateOne({_id: req.params.id}, comment)
         .then(() => {
@@ -68,4 +63,4 @@ exports.addSubComment = (req, res, next) => {
                 error: error,
             });
         });
-};
+}
