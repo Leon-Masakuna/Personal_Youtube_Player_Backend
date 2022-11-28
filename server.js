@@ -1,6 +1,8 @@
 const express = require("express")
 const app = express()
 const mongoose = require("mongoose")
+const dotenv = require("dotenv");
+dotenv.config();
 
 const commentRoute = require("./routes/comments")
 const userRoute = require("./routes/users")
@@ -9,7 +11,7 @@ const port = process.env.PORT  || 8100
 
 mongoose
   .connect(
-    "mongodb+srv://irmass98:irmassLeon03@cluster0.qzhdzl0.mongodb.net/?retryWrites=true&w=majority",
+    `mongodb+srv://${process.env.USER_NAME}:${process.env.USER_PASSWORD}@cluster0.qzhdzl0.mongodb.net/?retryWrites=true&w=majority`,
     { useNewUrlParser: true, useUnifiedTopology: true }
   )
   .then(() => console.log("Connexion à MongoDB réussie !"))
