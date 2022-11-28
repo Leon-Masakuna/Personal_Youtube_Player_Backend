@@ -3,6 +3,7 @@ const app = express()
 const mongoose = require("mongoose")
 
 const commentRoute = require("./routes/comments")
+const userRoute = require("./routes/users")
 
 const port = process.env.PORT  || 8100
 
@@ -17,6 +18,7 @@ mongoose
 app.use(express.json());
 
 app.use("/api/comment", commentRoute);
+app.use("/api/user", userRoute);
 
 app.listen(port, () => {
     console.log(`The application is running on the port ${port}`);
