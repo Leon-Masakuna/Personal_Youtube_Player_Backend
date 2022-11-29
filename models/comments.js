@@ -4,8 +4,12 @@ const commentSchema = mongoose.Schema({
     message: {type: String, required: true},
     time: {type: String},
     video: {type: String},
-    user: {type: String, required: true},
-    subComments : {type: Array}
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Users",
+        required: true
+    },
+    subComments : [{type: Array}]
 })
 
 module.exports = mongoose.model("Comments", commentSchema);
