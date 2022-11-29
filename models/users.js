@@ -8,4 +8,4 @@ const userSchema = mongoose.Schema({
     github: {type: String},
 });
 
-module.exports = mongoose.model("users", userSchema);
+module.exports = mongoose.model("Users", userSchema);
