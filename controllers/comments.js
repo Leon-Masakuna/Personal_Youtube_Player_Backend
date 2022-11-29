@@ -5,7 +5,7 @@ exports.createComment = (req, res, next) => {
         message: req.body.message,
         time: req.body.time,
         video: req.body.video,
-        user: req.body.user,
+        user: req.body.user._id,
         subComments: req.body.subComments,
     });
     comment
