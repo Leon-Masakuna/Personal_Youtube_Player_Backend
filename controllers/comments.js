@@ -3,10 +3,9 @@ const Comment = require("../models/comments");
 exports.createComment = (req, res, next) => {
   const comment = new Comment({
     message: req.body.message,
-    time: req.body.time,
     videoId: req.body.videoId,
-    userId: req.body.user._id,
-    subComments: req.body.subComments,
+    userId: req.body.userId,
+    parentComment: req.body.parentComment,
   });
   comment
     .save()
