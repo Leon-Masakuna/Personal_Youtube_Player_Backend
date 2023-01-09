@@ -1,15 +1,15 @@
-const Like = require("../models/like");
+const Dislike = require("../models/dislike");
 
-exports.createLike = (req, res, next) => {
-  const like = new Like({
+exports.createDislike = (req, res, next) => {
+  const dislike = new Dislike({
     commentId: req.body.commentId,
     userId: req.body.userId,
   });
-  like
+  dislike
     .save()
     .then(() => {
       res.status(201).json({
-        message: "like mention saved successfully!",
+        message: "dislike mention saved successfully!",
       });
     })
     .catch((error) => {
@@ -19,10 +19,10 @@ exports.createLike = (req, res, next) => {
     });
 };
 
-exports.getAllLike = (req, res, next) => {
-  Like.find()
-    .then((likes) => {
-      res.status(200).json(likes);
+exports.getAllDislike = (req, res, next) => {
+  Dislike.find()
+    .then((dislikes) => {
+      res.status(200).json(dislikes);
     })
     .catch((error) => {
       res.status(400).json({
@@ -31,11 +31,11 @@ exports.getAllLike = (req, res, next) => {
     });
 };
 
-exports.deleteLike = (req, res, next) => {
-  Like.deleteOne({ _id: req.params.id })
+exports.deleteDislike = (req, res, next) => {
+  Dislike.deleteOne({ _id: req.params.id })
     .then(() => {
       res.status(200).json({
-        message: "Like Mention Deleted Successfully!",
+        message: "Dislike Mention Deleted Successfully!",
       });
     })
     .catch((error) => {
