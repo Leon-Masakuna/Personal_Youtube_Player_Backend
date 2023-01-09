@@ -14,10 +14,14 @@ const socketIO = require("socket.io")(http, {
 
 const Comments = require("./models/comments");
 const Likes = require("./models/like");
+const Dislikes = require("./models/dislike");
+const Notification = require("./models/notifications");
 
 const commentRoute = require("./routes/comments");
 const userRoute = require("./routes/users");
 const likeRoute = require("./routes/likes");
+const dislikeRoute = require("./routes/dislikes");
+const notificationRoute = require("./routes/notifications");
 
 const port = process.env.PORT || 8100;
 
@@ -83,6 +87,51 @@ socketIO.on("connection", (socket) => {
     likes.save().then(() => socketIO.emit("likeResponse", like));
   });
 
+  //get deleted like from the client
+  /* socket.on("likeDeleted", (deletelike) => {
+    Likes.deleteOne(deletelike.id).then(() =>
+      socketIO.emit("likeResponse", deletelike)
+    );
+  }); */
+
+  //send dislikes to the client
+  socket.on("getDislikes", () => {
+    Dislikes.find()
+      .sort({ createdAt: -1 })
+      .then((like) => {
+        // console.log("likess : ", like);
+        socket.emit("receiveDislikes", like);
+      })
+      .catch((error) => socket.emit("receiveDislikes", error));
+  });
+
+  //get dislikes from the client
+  socket.on("dislikeSend", (like) => {
+    console.log("dislikes : ", like);
+    const dislikes = new Dislikes(like);
+    dislikes.save().then(() => socketIO.emit("dislikeResponse", like));
+  });
+
+  //send notications to the client
+  socket.on("getNotifications", () => {
+    Notification.find()
+      .sort({ createdAt: -1 })
+      .then((notification) => {
+        // console.log("likess : ", notification);
+        socket.emit("receiveNotifications", notification);
+      })
+      .catch((error) => socket.emit("receiveNotifications", error));
+  });
+
+  //get notifications from the client
+  socket.on("notificationSend", (notification) => {
+    console.log("notifications : ", notification);
+    const notications = new Notification(notification);
+    notications
+      .save()
+      .then(() => socketIO.emit("notificationResponse", notification));
+  });
+
   //Listen when user disconnecting
   socket.on("disconnect", () => {
     console.log("🔥: A user disconnected");
@@ -94,6 +143,8 @@ app.use(express.json());
 app.use("/api/comment", commentRoute);
 app.use("/api/user", userRoute);
 app.use("/api/like", likeRoute);
+app.use("/api/dislike", dislikeRoute);
+app.use("/api/notification", notificationRoute);
 
 http.listen(port, () => {
   console.log(`The application is running on the port ${port}`);
